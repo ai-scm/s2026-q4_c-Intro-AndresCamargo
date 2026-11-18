@@ -1,0 +1,53 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="c1-contexto" name="C1 - Contexto">
+    <mxGraphModel dx="1414" dy="827" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=14;" value="&lt;b&gt;C1 – Diagrama de Contexto&lt;/b&gt;&lt;br&gt;Daily Standup Controller" vertex="1">
+          <mxGeometry height="50" width="300" x="400" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="dev" parent="1" style="html=1;dashed=0;whiteSpace=wrap;fillColor=#08427b;strokeColor=#073b6f;fontColor=#ffffff;shape=mxgraph.c4.person2;align=center;metaEdit=1;points=[[0.5,0,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0]];resizable=0;" value="&lt;b&gt;Developer&lt;/b&gt;&lt;div&gt;[Person]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;Integrante del equipo Scrum que reporta su avance diario&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="140" width="200" x="160" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sm" parent="1" style="html=1;dashed=0;whiteSpace=wrap;fillColor=#08427b;strokeColor=#073b6f;fontColor=#ffffff;shape=mxgraph.c4.person2;align=center;metaEdit=1;points=[[0.5,0,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0]];resizable=0;" value="&lt;b&gt;Scrum Master&lt;/b&gt;&lt;div&gt;[Person]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;Facilita el daily y remueve impedimentos del equipo&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="140" width="200" x="740" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="sys" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1168bd;strokeColor=#3c7fc0;fontColor=#ffffff;arcSize=10;align=center;metaEdit=1;" value="&lt;b&gt;Daily Standup Controller&lt;/b&gt;&lt;div&gt;[Software System]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;Envía recordatorios diarios, recibe reportes, valida ausencias, detecta estancamientos y publica los reportes en Teams&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="130" width="240" x="430" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="teams" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#999999;strokeColor=#6b6b6b;fontColor=#ffffff;arcSize=10;align=center;metaEdit=1;" value="&lt;b&gt;Microsoft Teams&lt;/b&gt;&lt;div&gt;[Software System]&lt;/div&gt;&lt;br&gt;&lt;div&gt;&lt;font style=&quot;font-size: 11px&quot;&gt;Plataforma de colaboración: canal de comunicación con el equipo y canal donde se publican los reportes&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="110" width="240" x="430" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="dev" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#707070;fontColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.7;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;" target="sys" value="Envía reporte diario">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="sys" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#707070;fontColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;exitX=0;exitY=0.7;exitDx=0;exitDy=0;entryX=0.3;entryY=1;entryDx=0;entryDy=0;" target="dev" value="Envía recordatorio diario">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="sys" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#707070;fontColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0.3;entryY=1;entryDx=0;entryDy=0;" target="sm" value="Envía alertas de ausencia y de estancamiento">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="sys" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#707070;fontColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;" target="teams" value="Publica el reporte de cada persona en el canal del equipo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="dev" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#707070;fontColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="teams" value="Lee los reportes del equipo">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="100" y="110" />
+              <mxPoint x="100" y="575" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="sm" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#707070;fontColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="teams" value="Lee los reportes del equipo">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="980" y="110" />
+              <mxPoint x="980" y="575" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
