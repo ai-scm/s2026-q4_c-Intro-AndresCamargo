@@ -1,3 +1,78 @@
+# Assignment 2 – Modelado arquitectónico C4: Control de Dailies en MS Teams
+
+**Escenario:** Acme Corp
+**Sistema propuesto:** Daily Standup Controller
+
+---
+
+## 1. Objetivo
+
+Modelar con los tres primeros niveles del C4 Model (Contexto, Contenedores y Componentes) una solución integrada con Microsoft Teams que permita a Acme Corp llevar un control estructurado de los reportes diarios de sus equipos Scrum:
+
+1. Enviar notificaciones programadas a cada integrante a una hora definida.
+2. Recibir el reporte diario en casillas predefinidas.
+3. Validar quién no realizó el reporte.
+4. Detectar si una persona reporta la misma temática tres veces consecutivas.
+5. Publicar los reportes en un canal de Teams visible para el grupo.
+
+## 2. Preliminar: lo que entendí de cada nivel del C4
+
+Es la primera vez que construyo un C4 Model. Esto fue lo que entendí:
+
+- **C1 – Contexto:** muestra el sistema como una única caja, rodeada de las personas que lo usan y de los sistemas externos con los que se relaciona. No incluye tecnologías. Responde a: ¿qué es el sistema y quién interactúa con él?
+- **C2 – Contenedores:** abre la caja del sistema y muestra sus piezas desplegables o ejecutables por separado (una API, una función programada, una base de datos), junto con la tecnología de cada una y los protocolos con que se comunican. Responde a: *¿de qué piezas grandes está hecho y cómo se hablan?*
+- **C3 – Componentes:** hace zoom en un solo contenedor y muestra sus módulos internos, cada uno con una responsabilidad clara. Responde a: *¿cómo está organizado por dentro el contenedor más importante?*
+
+Cada nivel es un zoom del anterior, por lo que lo que aparece en uno debe poder rastrearse en el siguiente.
+
+## 3. Diagramas
+
+| Nivel | Contenido |
+|---|---|
+| C1 – Contexto | Developer, Scrum Master, Daily Standup Controller y Microsoft Teams |
+| C2 – Contenedores | Daily Bot API, Daily Scheduler y Daily Database |
+| C3 – Componentes | 7 componentes del contenedor Daily Bot API |
+
+
+## 4. Lógica de estructuración del sistema
+
+Partí de una idea: Teams ya es la interfaz que usa el equipo, por lo que no construí ninguna aplicación de cara al usuario. El sistema es un bot que vive "detrás" de Teams. En C1 dejé solo dos actores, el Developer (quien reporta) y el Scrum Master (quien facilita el daily y remueve impedimentos), y a Teams como único sistema externo. Dejé fuera al Product Owner porque el no interviene en el control del daily y Teams ya entrega la identidad del usuario con cada mensaje.
+
+En C2 mapeé cada requisito a una responsabilidad. Concentré la lógica de negocio en un único contenedor (*Daily Bot API*), separé lo que depende del tiempo en un *Daily Scheduler* que solo "dispara" y no decide nada, y dejé la persistencia en una base de datos relacional. En C3 organicé la API por responsabilidad: dos puertas de entrada (Teams y Scheduler), servicios de lógica (reporte, seguimiento diario y detección de estancamiento) y dos componentes de salida que aíslan lo externo: el *Teams Notifier* (todo lo que sale hacia Teams) y el *Report Repository* (todo lo que va a la base de datos). Así, un cambio de canal o de base de datos afecta a un solo componente.
+
+## 5. Decisiones y justificaciones
+
+### 5.1 Alcance (C1)
+- **Developer y Scrum Master:** en Scrum, los Developers se autoorganizan y toman el trabajo del backlog; el Product Owner ordena el Product Backlog y el Scrum Master facilita y remueve impedimentos. Por eso el Scrum Master recibe las alertas de ausencia y de estancamiento.
+- **Quién ejecuta las validaciones:** las validaciones, la detección y la publicación (requisitos 3, 4 y 5) las hace el **sistema**, no una persona. Las personas reportan, reciben alertas o leen.
+
+### 5.2 Contenedores (C2)
+- **Las personas interactúan a través de Teams.** En C2 las flechas de las personas apuntan a Teams porque es la interfaz real que usan; el sistema las atiende detrás.
+- **El Scheduler solo dispara.** Llama a la API en lugar de validar él mismo, para que las reglas de negocio vivan en un único lugar y no se dupliquen.
+
+### 5.3 Componentes (C3)
+- **Notifier y Repository como únicos puntos de salida:** facilitan cambiar de canal de mensajería o de base de datos.
+- **Un solo Follow-up Service** para recordatorios y revisión de ausencias, porque ambos son tareas por horario sobre los mismos datos.
+- **Stagnation Detector separado:** la regla de las 3 repeticiones es la más delicada y conviene poder cambiarla sin tocar el resto. Como Lambda no conserva estado entre ejecuciones, el detector consulta siempre los últimos 3 reportes en la base de datos.
+
+**PostgreSQL:** los datos son tabulares y relacionados (equipos → miembros → reportes por fecha), y la consulta de los "últimos 3 reportes" es directa en SQL.
+
+### 5.4 Bot Framework y su relación con la nube elegida
+- **Bot Framework SDK:** biblioteca de Microsoft (disponible en Node.js) con la que se escribe el bot. Corre dentro de nuestro código, en la API.
+- **Bot Framework Connector:** servicio/API de Microsoft a través de la cual el bot recibe y envía mensajes a canales como Teams.
+- **Registro del bot:** aunque el código se ejecute en AWS, el bot debe registrarse del lado de Microsoft (recurso de bot y registro de aplicación) para que Teams pueda enviarle mensajes. 
+
+## 6. Cobertura de los requisitos
+
+| # | Requisito | Quién lo resuelve |
+|---|---|---|
+| 1 | Notificaciones programadas | Daily Scheduler → Scheduler Controller → Daily Follow-up Service → Teams Notifier |
+| 2 | Reporte en casillas predefinidas | Teams Notifier (envía el formulario) y Teams Activity Handler + Report Service (lo reciben y guardan) |
+| 3 | Validar quién no reportó | Daily Scheduler → Daily Follow-up Service → Teams Notifier (alerta al Scrum Master) |
+| 4 | Detectar mismo tema 3 veces seguidas | Report Service → Stagnation Detector → Teams Notifier |
+| 5 | Publicar reportes en un canal | Report Service → Teams Notifier |
+
+
 # Pipeline de datos serverless en AWS: CSV → JSON → Glue → Athena
 
 | | |
