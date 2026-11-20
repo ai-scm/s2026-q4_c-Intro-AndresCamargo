@@ -1,3 +1,31 @@
+# The Twelve-Factor App — Selección y justificación
+
+**Fecha:** 20 de noviembre del 2026
+
+---
+
+## Factores seleccionados
+
+1. **III. Config** — Configuración en variables de entorno.
+2. **IV. Backing services** — Servicios externos tratados como recursos adjuntos.
+3. **II. Dependencies** — Dependencias declaradas y aisladas explícitamente.
+4. **XI. Logs** — Logs como flujos de eventos.
+
+---
+
+## Justificación
+
+Considero que los siguientes elementos son los que más presentes han estado a lo largo de las actividades realizadas: **Config**, **Backing services**, **Dependencies** y **Logs** porque son los factores que atraviesan varios de las actividades que se han desarrollado por dar unos ejemplos: la integración con Teams para reportes de daily scrum, la analítica con OpenSearch desplegada en Docker y el pipeline serverless en AWS con S3, Lambda, Glue y Athena— y porque atacan directamente los puntos donde más riesgo operativo y más fricción de entrega hemos identificado. **Config** nos permite separar credenciales y parámetros de entorno del código, reduciendo el riesgo de filtraciones y facilitando el despliegue en distintos contextos. **Backing services** nos obliga a tratar software (Teams, OpenSearch y los servicios de AWS) como recursos conectados por configuración, de modo que podamos reemplazarlos o escalarlos sin tocar la lógica de negocio, lo que es clave para la portabilidad que un cliente espera. **Dependencies** garantiza que cualquier miembro del equipo o del cliente pueda levantar el proyecto con Docker o empaquetar una Lambda con sus librerías exactas, eliminando la variabilidad entre entornos. Finalmente, **Logs** nos asegura que los eventos de la aplicación y del pipeline fluyan como streams hacia CloudWatch u OpenSearch, habilitando la observabilidad y la depuración en un sistema distribuido. En conjunto, estos cuatro factores no solo son buenas prácticas técnicas: son la base para que el cliente perciba entregas repetibles, auditables y con menor tiempo de inactividad.
+
+---
+
+## Valor para el cliente
+
+- **Config** → menos riesgo de incidentes de seguridad y menor tiempo para habilitar un nuevo entorno.
+- **Backing services** → capacidad de adaptarse a la infraestructura del cliente sin rehacer el proyecto.
+- **Dependencies** → entregas reproducibles que el equipo del cliente puede ejecutar sin configuraciones manuales.
+- **Logs** → trazabilidad y auditoría, requisito directo en reportes de daily scrum y en pipelines de datos.
+
 # Assignment 2 – Modelado arquitectónico C4: Control de Dailies en MS Teams
 
 **Escenario:** Acme Corp
