@@ -10,5 +10,5 @@ Es un principio de diseño que establece que la mayoría de los sistemas funcion
 - **Evitar la optimización prematura:** No gastar tiempo resolviendo problemas de rendimiento que aún no existen.
 
 **Ejemplo de valor para un cliente:**
-Imagina que un cliente pide un ERP para gestionar inventario, pero exige una interfaz con 50 botones, animaciones 3D y gráficos complejos para funcionalidades extremadamente sencillas (como sumar y restar stock). 
+Imaginemos que un cliente pide un ERP para gestionar inventario, pero exige una interfaz con 50 botones, animaciones 3D y gráficos complejos para funcionalidades extremadamente sencillas (como sumar y restar stock). 
 Aplicar KISS nos permite proponerle una primera versión funcional (un formulario simple y una tabla): entregamos valor en semanas en lugar de meses, el cliente empieza a usar el producto rápido y la complejidad visual se añade solo si el uso real lo demuestra.
