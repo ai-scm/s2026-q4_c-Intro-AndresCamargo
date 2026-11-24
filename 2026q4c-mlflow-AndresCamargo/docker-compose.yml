@@ -1,0 +1,35 @@
+x-base: &base
+  build: .
+  image: mlflow-taller:latest
+  environment:
+    MLFLOW_TRACKING_URI: http://mlflow:5000
+
+services:
+  mlflow:
+    <<: *base
+    command: >
+      mlflow server --host 0.0.0.0 --port 5000
+      --backend-store-uri sqlite:////mlflow/mlflow.db
+      --artifacts-destination /mlflow/artifacts --serve-artifacts
+    ports: ["5000:5000"]
+    volumes: ["mlflow-data:/mlflow"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 5s
+      retries: 20
+
+  train:
+    <<: *base
+    command: python train.py
+    depends_on:
+      mlflow: {condition: service_healthy}
+
+  serve:
+    <<: *base
+    command: mlflow models serve -m models:/breast-cancer-clf@champion -h 0.0.0.0 -p 5001 --env-manager local
+    ports: ["5001:5001"]
+    depends_on:
+      train: {condition: service_completed_successfully}
+
+volumes:
+  mlflow-data:
